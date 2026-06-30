@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Workshop Dashboard - Blogify</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="extra-styles.css">
+  <script defer src="dashboard.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <a href="index.html" style="text-decoration: none;">
+          <h1 class="navbar-title">Blogify</h1>
+        </a>
+      </div>
+      <div id="authArea" class="navbar-auth"></div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="dashboard-header">
+      <h1> My Workshop</h1>
+      <a href="index.html" class="btn-secondary">← Back Home</a>
+    </div>
+
+    <section class="dashboard-editor">
+      <h2>Create / Edit DevLog Entry</h2>
+      <form id="editorForm">
+        <input type="hidden" id="postId">
+        
+        <div class="form-group">
+          <label for="title">Project Title</label>
+          <input type="text" id="title" placeholder="e.g. ESP32 Sensor Array v2.0..." required>
+        </div>
+
+        <div class="form-group">
+          <label for="content">DevLog Content</label>
+          <textarea id="content" rows="10" placeholder="Document your build process, schematics, code snippets..." required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary"> Publish</button>
+          <button type="button" id="cancelBtn" class="btn-secondary">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="dashboard-posts">
+      <h2>Your DevLogs</h2>
+      <div id="userPostsList" class="posts-table-container">
+        <p>Loading your devlogs...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Blogify. All rights reserved.</p>
+  </footer>
+</body>
+</html>
