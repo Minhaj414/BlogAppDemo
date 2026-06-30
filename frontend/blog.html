@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DevLog Post - Blogify</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="extra-styles.css">
+  <script defer src="blog-view.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-brand">
+        <a href="index.html" style="text-decoration: none;">
+          <h1 class="navbar-title">Blogify</h1>
+        </a>
+      </div>
+      <div id="authArea" class="navbar-auth"></div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <article class="blog-full">
+      <div id="blogContent" class="loading">
+        <p>Loading devlog...</p>
+      </div>
+    </article>
+
+    <div class="blog-actions">
+      <a href="index.html" class="btn-secondary">← Back to DevLogs</a>
+      <div id="ownerActions"></div>
+    </div>
+
+    <section class="related-posts">
+      <h2>More from this Author</h2>
+      <div id="relatedPosts" class="blogs-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Blogify. All rights reserved.</p>
+  </footer>
+</body>
+</html>

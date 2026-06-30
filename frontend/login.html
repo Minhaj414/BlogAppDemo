@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — Blogify</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    async function login(e){
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if(!username || !password) return alert('Username and password required');
+      const res = await fetch('../backend/auth.php?action=login', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({username, password})
+      });
+      if (res.ok) {
+        location.href = 'index.html';
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Login failed');
+      }
+    }
+  </script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--white);
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .auth-card h1 {
+      font-size: 28px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .auth-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .auth-actions button {
+      width: 100%;
+      padding: 12px;
+    }
+    .auth-links {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .auth-links a {
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <h1>Sign in to Blogify</h1>
+    <form onsubmit="login(event)">
+      <div class="form-group">
+        <label>Username or Email</label>
+        <input id="username" type="text" placeholder="operator_id" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input id="password" type="password" placeholder="••••••••" required>
+      </div>
+      <div class="auth-actions">
+        <button type="submit">Authenticate</button>
+      </div>
+    </form>
+    <div class="auth-links">
+      Don't have an account? <a href="register.html">Create one</a>
+    </div>
+  </div>
+</body>
+</html>
