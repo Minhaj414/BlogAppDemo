@@ -69,28 +69,9 @@ function searchBlogs() {
 }
 
 async function checkAuth(){
-  try {
-    const res = await fetch(AUTH + '?action=me', {credentials: 'same-origin'});
-    const me = await res.json();
-    currentUser = me;
-    const area = document.getElementById('authArea');
-    const dashLink = document.getElementById('dashboardLink');
-    
-    if(me) {
-      area.innerHTML = `<span style="color: #00ff88;">👤 ${escapeHtml(me.username)}</span> <button id="logoutBtn">Logout</button>`;
-      if(dashLink) dashLink.style.display = 'inline-block';
-      document.getElementById('logoutBtn').addEventListener('click', async ()=>{
-        await fetch(AUTH + '?action=logout', {method:'POST', credentials: 'same-origin'});
-        location.reload();
-      });
-    } else {
-      area.innerHTML = `<a href="login.html"><div class="auth-btn auth-btn-login">⚡ Sign In</div></a> <a href="register.html"><div class="auth-btn-register auth-btn">🔧 Register</div></a>`;
-      if(dashLink) dashLink.style.display = 'none';
-    }
-  } catch(e) {
-    console.warn('Auth check failed', e);
-  }
+  currentUser = await initAuthMenu({ showDashboard: true });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();

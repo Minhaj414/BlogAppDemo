@@ -75,7 +75,7 @@ async function checkAuth(){
       location.reload();
       });
     } else {
-      area.innerHTML = `<a href="login.html"><div class="auth-btn auth-btn-login">⚡ Sign In</div></a> <a href="register.html"><div class="auth-btn-register auth-btn">🔧 Register</div></a>`;
+      area.innerHTML = `<a href="login.html"><div class="auth-btn auth-btn-login">Sign In</div></a> <a href="register.html"><div class="auth-btn-register auth-btn">Register</div></a>`;
     }
   }catch(e){ console.warn('auth check failed', e); }
 }

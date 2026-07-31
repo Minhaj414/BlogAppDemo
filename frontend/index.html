@@ -3,70 +3,97 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Blogify</title>
+  <title>Blogify — Discover & Share Ideas</title>
+  <meta name="description" content="Blogify is a premium publishing platform to share ideas, knowledge, and experiences with the world." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="extra-styles.css">
+  <script defer src="auth-menu.js"></script>
   <script defer src="home.js"></script>
 </head>
 <body>
-  <nav class="navbar">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="navbar-container">
       <div class="navbar-brand">
-        <a href="index.html" style="text-decoration: none;">
+        <a href="index.html">
+          <span class="navbar-logo-dot"></span>
           <h1 class="navbar-title">Blogify</h1>
         </a>
       </div>
       <div id="authArea" class="navbar-auth"></div>
-      <a href="dashboard.html" id="dashboardLink" class="nav-dashboard-btn" style="display: none;">My Dashboard</a>
-      
     </div>
   </nav>
 
+  <!-- ── Main ── -->
   <main class="container">
-    <section class="hero">
-      <h1 class="hero-title">Welcome to Blogify</h1>
-      <p class="hero-subtitle">Discover knowledge, tips, and experiences</p>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Welcome section">
+      <div class="hero-eyebrow">
+        <span class="hero-eyebrow-dot"></span>
+        Independent Publishing Platform
+      </div>
+      <h1 class="hero-title">Ideas worth<br>sharing.</h1>
+      <p class="hero-subtitle">
+        Discover insightful articles, technical deep-dives, and creative stories
+        from a community of passionate writers.
+      </p>
       <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search blog posts...">
-        <button id="searchBtn">🔍︎</button>
+        <div class="search-wrapper">
+          <input type="text" id="searchInput" placeholder="Search posts, authors…" autocomplete="off">
+        </div>
+        <button id="searchBtn" aria-label="Search">Search</button>
       </div>
     </section>
 
-    <section class="blog-list">
+    <!-- Blog list -->
+    <section class="blog-list" aria-label="Latest blog posts">
       <div class="list-header">
         <h2>Latest Posts</h2>
       </div>
       <div id="blogsList" class="blogs-grid">
-        <p>Loading posts...</p>
+        <p style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-faint);">Loading posts…</p>
       </div>
     </section>
+
   </main>
 
-  <footer class="footer">
+  <!-- ── Footer ── -->
+  <footer class="footer" role="contentinfo">
     <div class="footer-content">
-      <div class="footer-section">
-        <h4>About Platform</h4>
-        <p>&copy; 2026 Blogify. A developer platform for focused technical publishing.</p>
+      <div class="footer-section footer-brand">
+        <h4>Blogify</h4>
+        <p>A premium publishing platform for focused, thoughtful content. Share your expertise with the world.</p>
+        <p style="margin-top:8px;">&copy; 2026 Blogify.</p>
       </div>
       <div class="footer-section">
         <h4>Developer</h4>
-        <p><strong>MJM. Minhaj</strong></p>
+        <p><strong style="color:var(--text);">MJM. Minhaj</strong></p>
+        <p>Full-Stack Developer &amp; Designer</p>
       </div>
       <div class="footer-section">
         <h4>Connect</h4>
-        <ul style="list-style: none; padding: 0; text-decoration: none;">
-          <li><a href="https://minhaj414.github.io/portfolio2/" style="text-decoration: none;"><img width="26" height="26" src="https://img.icons8.com/3d-fluency/94/resume-website.png" alt="resume-website"/> Portfolio</a></li>
-          <li><a href="https://github.com/minhaj414" style="text-decoration: none;"><img width="24" height="24" src="https://img.icons8.com/softteal-color/24/github.png" alt="github"/> GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/minhaj-it/" style="text-decoration: none;"><img width="26" height="26" src="https://img.icons8.com/fluency/48/linkedin.png" alt="linkedin"/> LinkedIn</a></li>
+        <ul>
+          <li><a href="https://minhaj414.github.io/portfolio2/" target="_blank" rel="noopener">
+            <img width="20" height="20" src="https://img.icons8.com/3d-fluency/94/resume-website.png" alt=""> Portfolio
+          </a></li>
+          <li><a href="https://github.com/minhaj414" target="_blank" rel="noopener">
+            <img width="20" height="20" src="https://img.icons8.com/softteal-color/24/github.png" alt=""> GitHub
+          </a></li>
+          <li><a href="https://www.linkedin.com/in/minhaj-it/" target="_blank" rel="noopener">
+            <img width="20" height="20" src="https://img.icons8.com/fluency/48/linkedin.png" alt=""> LinkedIn
+          </a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2026 Blogify. Built by MJM. Minhaj</p>
+      <p>&copy; 2026 Blogify &mdash; Built with ♥ by MJM. Minhaj</p>
     </div>
   </footer>
+
 </body>
 </html>
