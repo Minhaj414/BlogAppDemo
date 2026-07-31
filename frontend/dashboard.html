@@ -3,19 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Workshop Dashboard - Blogify</title>
+  <title>My Dashboard — Blogify</title>
+  <meta name="description" content="Manage and publish your blog posts on Blogify from your personal dashboard." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="extra-styles.css">
+  <script defer src="auth-menu.js"></script>
   <script defer src="dashboard.js"></script>
 </head>
 <body>
-  <nav class="navbar">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="navbar-container">
       <div class="navbar-brand">
-        <a href="index.html" style="text-decoration: none;">
+        <a href="index.html">
+          <span class="navbar-logo-dot"></span>
           <h1 class="navbar-title">Blogify</h1>
         </a>
       </div>
@@ -23,44 +28,53 @@
     </div>
   </nav>
 
+  <!-- ── Main ── -->
   <main class="container">
+
     <div class="dashboard-header">
-      <h1> My Workshop</h1>
-      <a href="index.html" class="btn-secondary">← Back Home</a>
+      <h1>My Workshop</h1>
+      <a href="index.html" class="btn-secondary">← Back to Home</a>
     </div>
 
-    <section class="dashboard-editor">
-      <h2>Create / Edit DevLog Entry</h2>
-      <form id="editorForm">
+    <!-- Editor Section -->
+    <section class="dashboard-editor" aria-label="Post editor">
+      <h2>Create / Edit Post</h2>
+      <form id="editorForm" novalidate>
         <input type="hidden" id="postId">
-        
+
         <div class="form-group">
-          <label for="title">Project Title</label>
-          <input type="text" id="title" placeholder="e.g. ESP32 Sensor Array v2.0..." required>
+          <label for="title">Post Title</label>
+          <input type="text" id="title" placeholder="Give your post a compelling title…" required>
         </div>
 
         <div class="form-group">
-          <label for="content">DevLog Content</label>
-          <textarea id="content" rows="10" placeholder="Document your build process, schematics, code snippets..." required></textarea>
+          <label for="content">Content</label>
+          <textarea id="content" rows="12" placeholder="Share your knowledge, ideas, or story here…" required></textarea>
         </div>
 
         <div class="form-actions">
-          <button type="submit" class="btn-primary"> Publish</button>
+          <button type="submit" class="btn-primary" id="submitPostBtn">Publish Post</button>
           <button type="button" id="cancelBtn" class="btn-secondary">Cancel</button>
         </div>
       </form>
     </section>
 
-    <section class="dashboard-posts">
-      <h2>Your DevLogs</h2>
+    <!-- Posts List -->
+    <section class="dashboard-posts" aria-label="Your posts">
+      <h2>Your Posts</h2>
       <div id="userPostsList" class="posts-table-container">
-        <p>Loading your devlogs...</p>
+        <p style="text-align:center;padding:48px 0;color:var(--text-faint);">Loading your posts…</p>
       </div>
     </section>
+
   </main>
 
-  <footer class="footer">
-    <p>&copy; 2026 Blogify. All rights reserved.</p>
+  <!-- ── Footer ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-bottom" style="margin:0;max-width:100%;border-top:1px solid rgba(255,255,255,0.05);">
+      <p>&copy; 2026 Blogify &mdash; Built with ♥ by MJM. Minhaj</p>
+    </div>
   </footer>
+
 </body>
 </html>

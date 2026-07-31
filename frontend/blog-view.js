@@ -133,24 +133,7 @@ async function deleteBlog() {
 }
 
 async function checkAuth() {
-  try {
-    const res = await fetch(AUTH + '?action=me', {credentials: 'same-origin'});
-    const me = await res.json();
-    currentUser = me;
-    const area = document.getElementById('authArea');
-    
-    if(me) {
-      area.innerHTML = `<span style="color: #00ff88;">👤 ${escapeHtml(me.username)}</span> <button id="logoutBtn">Logout</button>`;
-      document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await fetch(AUTH + '?action=logout', {method: 'POST', credentials: 'same-origin'});
-        location.reload();
-      });
-    } else {
-      area.innerHTML = `<a href="login.html"><div class="auth-btn auth-btn-login">⚡ Sign In</div></a> <a href="register.html"><div class="auth-btn-register auth-btn">🔧 Register</div></a>`;
-    }
-  } catch(e) {
-    console.warn('Auth check failed', e);
-  }
+  currentUser = await initAuthMenu({ showDashboard: false });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

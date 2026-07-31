@@ -3,27 +3,46 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login — Blogify</title>
+  <title>Sign In — Blogify</title>
+  <meta name="description" content="Sign in to your Blogify account to manage and publish your blog posts." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script>
-    async function login(e){
+    async function login(e) {
       e.preventDefault();
+      const btn = document.getElementById('submitBtn');
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
-      if(!username || !password) return alert('Username and password required');
-      const res = await fetch('../backend/auth.php?action=login', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({username, password})
-      });
-      if (res.ok) {
-        location.href = 'index.html';
-      } else {
-        const err = await res.json();
-        alert(err.error || 'Login failed');
+      if (!username || !password) return showError('Username and password are required.');
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+      try {
+        const res = await fetch('../backend/auth.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        if (res.ok) {
+          location.href = 'index.html';
+        } else {
+          const err = await res.json();
+          showError(err.error || 'Login failed. Please check your credentials.');
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+        }
+      } catch {
+        showError('Network error. Please try again.');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
       }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
     }
   </script>
   <style>
@@ -32,64 +51,230 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      padding: 24px;
+      background-image:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(52,211,153,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(99,102,241,0.07) 0%, transparent 60%);
     }
-    .auth-card {
+
+    .auth-page-wrap {
       width: 100%;
-      max-width: 400px;
-      background: var(--white);
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: var(--shadow-lg);
-      border: 1px solid var(--border);
-    }
-    .auth-card h1 {
-      font-size: 28px;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-    .form-group {
-      margin-bottom: 16px;
-    }
-    .auth-actions {
+      max-width: 440px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 24px;
+      align-items: center;
+      gap: 28px;
     }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .auth-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #34d399 0%, #a7f3d0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    .auth-logo-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 10px rgba(52,211,153,0.5);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .auth-card {
+      width: 100%;
+      background: rgba(13, 20, 36, 0.90);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 40px 36px;
+      border-radius: 20px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(52,211,153,0.05);
+    }
+
+    .auth-heading {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+    }
+
+    .auth-subtitle {
+      font-size: 13.5px;
+      color: #64748b;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .form-group input {
+      padding-left: 40px;
+    }
+
+    .error-msg {
+      display: none;
+      background: rgba(220,38,38,0.1);
+      border: 1px solid rgba(220,38,38,0.3);
+      color: #f87171;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .auth-actions {
+      margin-top: 28px;
+    }
+
     .auth-actions button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 12px;
+      border: 1px solid #059669;
+      background: #34d399;
+      color: #022c22;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.01em;
     }
+
+    .auth-actions button:hover:not(:disabled) {
+      background: #6ee7b7;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(52,211,153,0.35);
+    }
+
+    .auth-actions button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .auth-links {
       text-align: center;
-      margin-top: 16px;
-      font-size: 14px;
-      color: var(--text-muted);
+      margin-top: 22px;
+      font-size: 13.5px;
+      color: #475569;
     }
+
     .auth-links a {
+      color: #34d399;
       font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .auth-links a:hover { color: #6ee7b7; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: #334155;
+      font-size: 12px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.8); }
     }
   </style>
 </head>
 <body>
-  <div class="auth-card">
-    <h1>Sign in to Blogify</h1>
-    <form onsubmit="login(event)">
-      <div class="form-group">
-        <label>Username or Email</label>
-        <input id="username" type="text" placeholder="operator_id" required>
+  <div class="auth-page-wrap">
+
+    <a href="index.html" class="auth-logo">
+      <span class="auth-logo-dot"></span>
+      <span class="auth-logo-text">Blogify</span>
+    </a>
+
+    <div class="auth-card">
+      <div class="auth-heading">
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Sign in to continue to your dashboard</p>
       </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input id="password" type="password" placeholder="••••••••" required>
+
+      <div id="errorMsg" class="error-msg" role="alert"></div>
+
+      <form onsubmit="login(event)" novalidate>
+        <div class="form-group">
+          <label for="username">Username or Email</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input id="username" type="text" placeholder="your_username" autocomplete="username" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+        </div>
+        <div class="auth-actions">
+          <button type="submit" id="submitBtn">Sign In</button>
+        </div>
+      </form>
+
+      <div class="divider">or</div>
+
+      <div class="auth-links">
+        Don't have an account? <a href="register.html">Create one for free</a>
       </div>
-      <div class="auth-actions">
-        <button type="submit">Sign In</button>
-      </div>
-    </form>
-    <div class="auth-links">
-      Don't have an account? <a href="register.html">Create one</a>
     </div>
+
   </div>
 </body>
 </html>

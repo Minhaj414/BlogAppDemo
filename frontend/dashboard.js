@@ -15,25 +15,16 @@ function getEditIdFromUrl() {
 
 async function checkAuth() {
   try {
-    const res = await fetch(AUTH + '?action=me', {credentials: 'same-origin'});
-    const me = await res.json();
+    const me = await initAuthMenu({ showDashboard: false });
     currentUser = me;
-    
+
     if (!me) {
       alert('You must be logged in to access the workshop');
       window.location.href = 'login.html';
       return;
     }
 
-    const area = document.getElementById('authArea');
-    area.innerHTML = `<span style="color: #00ff88;">👤 ${escapeHtml(me.username)}</span> <button id="logoutBtn">Logout</button>`;
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      await fetch(AUTH + '?action=logout', {method: 'POST', credentials: 'same-origin'});
-      location.reload();
-    });
-
-    fetchUserPosts();
-    checkEditMode();
+    await fetchUserPosts();
   } catch(e) {
     console.error('Auth check failed', e);
   }
@@ -48,6 +39,9 @@ async function fetchUserPosts() {
     
     userPosts = allPosts.filter(p => p.user_id === currentUser.id);
     renderUserPosts();
+
+    // After posts are loaded, check if we arrived from a "Edit" link on blog view
+    await checkEditMode();
   } catch (e) {
     console.error('Error fetching devlogs:', e);
   }
@@ -79,10 +73,10 @@ function renderUserPosts() {
             </td>
             <td>${new Date(post.created_at).toLocaleDateString()}</td>
             <td>${post.updated_at ? new Date(post.updated_at).toLocaleDateString() : '—'}</td>
-            <td class="actions">
-              <button class="btn-small" onclick="editPost(${post.id})"> Edit</button>
-              <button class="btn-small btn-danger" onclick="deletePost(${post.id})"> Delete</button>
-            </td>
+              <td class="actions">
+                <button class="btn-small btn-primary" onclick="editPost(${post.id})">✏️ Edit</button>
+                <button class="btn-small btn-danger" onclick="deletePost(${post.id})">🗑 Delete</button>
+              </td>
           </tr>
         `).join('')}
       </tbody>
@@ -166,14 +160,30 @@ function resetForm() {
   document.getElementById('content').value = '';
 }
 
-function checkEditMode() {
+async function checkEditMode() {
   const editId = getEditIdFromUrl();
-  if (editId) {
-    const post = userPosts.find(p => p.id == editId);
-    if (post) {
-      editPost(editId);
+  if (!editId) return;
+
+  // First try to find it in the already-loaded user posts
+  let post = userPosts.find(p => p.id == editId);
+
+  // If not found (e.g. arriving fresh from blog.html), fetch it directly by ID
+  if (!post) {
+    try {
+      const res = await fetch(API + '?id=' + editId, {credentials: 'same-origin'});
+      post = await res.json();
+    } catch (e) {
+      console.error('Could not fetch post for editing:', e);
+      return;
     }
   }
+
+  if (!post) return;
+
+  document.getElementById('postId').value = post.id;
+  document.getElementById('title').value = post.title;
+  document.getElementById('content').value = post.content;
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 document.addEventListener('DOMContentLoaded', () => {
