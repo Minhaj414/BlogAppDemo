@@ -6,11 +6,14 @@ A full-stack blogging platform built with **vanilla PHP** (backend API) and **HT
 
 ## ✨ Features
 
+- **Premium Landing Page** — Stunning dark-themed landing page with glassmorphism, animations, and a modern hero section (`app.html`)
 - **User Authentication** — Register, login, logout with PHP sessions
 - **Blog Post CRUD** — Create, read, update, and delete blog posts
 - **Ownership Protection** — Users can only edit/delete their own posts
 - **Search** — Search blog posts from the homepage
 - **Responsive Design** — Mobile-friendly UI with modern styling
+- **Dark / Light Theme** — Toggle between dark and light themes
+- **Rich Text Toolbar** — Text formatting toolbar for post creation
 - **Dashboard** — Authenticated users get a personal dashboard to manage posts
 - **Individual Post View** — Dedicated page for each blog post
 
@@ -35,6 +38,7 @@ Blog-app/
 ├── .env                  # Environment variables (DB credentials, URLs)
 ├── .gitignore            # Git ignore rules
 ├── README.md             # This file
+├── app.html              # Landing page — premium hero, features & CTA
 │
 ├── backend/
 │   ├── config.php        # Loads .env and defines DB constants
@@ -55,7 +59,10 @@ Blog-app/
     ├── home.js           # Homepage logic (fetch & display posts)
     ├── blog-view.js      # Single post view logic
     ├── dashboard.js      # Dashboard logic (CRUD operations)
-    └── script.js         # Auth-related scripts (login/register)
+    ├── script.js         # Auth-related scripts (login/register)
+    ├── auth-menu.js      # Auth menu UI component
+    ├── text-toolbar.js   # Rich text formatting toolbar
+    └── theme.js          # Dark/light theme toggle logic
 ```
 
 ---
@@ -131,7 +138,13 @@ This will automatically create the `blog` database and the required tables.
 
 ### 6. Open the App
 
-Visit the frontend in your browser:
+Visit the landing page in your browser:
+
+```
+http://localhost/Blog-app/app.html
+```
+
+Or go directly to the blog homepage:
 
 ```
 http://localhost/Blog-app/frontend/index.html
