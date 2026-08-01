@@ -21,8 +21,20 @@ function escapeHtml(s) {
 }
 
 function getExcerpt(content, length = 150) {
-  const text = content.replace(/<[^>]*>/g, '').substring(0, length);
-  return text + (content.length > length ? '...' : '');
+  // Strip markdown syntax for clean preview
+  let text = content
+    .replace(/^#{1,3}\s+/gm, '')        // headings
+    .replace(/\*\*([^*]+)\*\*/g, '$1')   // bold
+    .replace(/\*([^*]+)\*/g, '$1')       // italic
+    .replace(/`([^`]+)`/g, '$1')         // inline code
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links
+    .replace(/^[-*]\s+/gm, '')           // bullet lists
+    .replace(/^\d+\.\s+/gm, '')          // ordered lists
+    .replace(/^>\s+/gm, '')              // blockquotes
+    .replace(/<[^>]*>/g, '')             // HTML tags
+    .replace(/\n+/g, ' ')               // collapse newlines
+    .trim();
+  return text.substring(0, length) + (text.length > length ? '…' : '');
 }
 
 function renderBlogsList(posts) {
