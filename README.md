@@ -2,6 +2,8 @@
 
 A full-stack blogging platform built with **vanilla PHP** (backend API) and **HTML / CSS / JavaScript** (frontend). Users can register, log in, and perform full CRUD operations on blog posts — all served through XAMPP/Apache.
 
+🌐 **Live Demo:** [https://blogify.infinityfree.io/](https://blogify.infinityfree.io/)
+
 ---
 
 ## ✨ Features
