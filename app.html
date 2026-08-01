@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blogify — Share Your Ideas with the World</title>
+  <meta name="description" content="Blogify is a premium publishing platform to share ideas, knowledge, and experiences with the world." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%2334d399'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Reset ────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ─── Design Tokens ────────────────────────────────── */
+    :root {
+      --accent:         #6ee7b7;
+      --accent-bright:  #34d399;
+      --accent-dark:    #059669;
+      --accent-glow:    rgba(52, 211, 153, 0.25);
+      --bg:             #18181b;
+      --bg-2:           #1e1e24;
+      --bg-3:           #27272f;
+      --surface:        rgba(30, 30, 38, 0.85);
+      --glass:          rgba(255, 255, 255, 0.04);
+      --glass-border:   rgba(255, 255, 255, 0.10);
+      --text:           #f1f5f9;
+      --text-muted:     #94a3b8;
+      --text-faint:     #475569;
+      --text-on-accent: #022c22;
+      --border:         rgba(148, 163, 184, 0.12);
+      --shadow-lg:      0 8px 40px rgba(0,0,0,0.6);
+      --shadow-glow:    0 0 30px rgba(52,211,153,0.18), 0 4px 20px rgba(0,0,0,0.5);
+      --radius-md:      12px;
+      --radius-lg:      18px;
+      --radius-xl:      24px;
+      --transition:     0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ─── Navbar ────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(24, 24, 27, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 1000;
+      padding: 0.9rem 0;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      box-shadow: 0 0 10px var(--accent-glow);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 14px;
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-bright);
+    }
+
+    /* ─── Hero Section ──────────────────────────────────── */
+    .hero {
+      margin-top: 64px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -15%, rgba(52,211,153,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 100%, rgba(52,211,153,0.06) 0%, transparent 55%),
+        var(--bg);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -8%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(52,211,153,0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -5%;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(110,231,183,0.04) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(30px); }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.8); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 720px;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+      color: var(--accent-bright);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 900;
+      margin-bottom: 22px;
+      line-height: 1.15;
+      color: var(--text);
+      animation: slideDown 1s ease-out;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 19px;
+      font-weight: 400;
+      margin-bottom: 40px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: slideUp 1.2s ease-out;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: slideUp 1.4s ease-out;
+    }
+
+    /* ─── Buttons ────────────────────────────────────────── */
+    .btn {
+      padding: 14px 36px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      display: inline-block;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary {
+      background: var(--accent-bright);
+      color: var(--text-on-accent);
+      border: 1px solid var(--accent-dark);
+      box-shadow: 0 4px 20px rgba(52,211,153,0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(52,211,153,0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-bright);
+      color: var(--accent-bright);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 20px rgba(52,211,153,0.12);
+    }
+
+    /* ─── Features Section ──────────────────────────────── */
+    .features {
+      background: var(--bg-2);
+      padding: 100px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .features-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-bright);
+      margin-bottom: 16px;
+    }
+
+    .section-label-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-bright);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 56px;
+      color: var(--text);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      padding: 36px 32px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--glass-border);
+      transition: all var(--transition);
+      text-align: left;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(52,211,153,0.2);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ─── Stats Section ─────────────────────────────────── */
+    .stats {
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(52,211,153,0.08) 0%, transparent 70%),
+        var(--bg);
+      padding: 80px 24px;
+      text-align: center;
+    }
+
+    .stats-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px;
+    }
+
+    .stat-item {
+      padding: 24px;
+    }
+
+    .stat-item h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-item p {
+      font-size: 15px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ─── CTA Section ───────────────────────────────────── */
+    .cta {
+      background: var(--bg-2);
+      padding: 100px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-content {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    .cta p {
+      font-size: 17px;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    /* ─── Footer ────────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      color: var(--text-faint);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: var(--accent-bright);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition);
+    }
+
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    /* ─── Animations ────────────────────────────────────── */
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ── Navigation ── -->
+  <nav>
+    <div class="nav-container">
+      <a href="./frontend/index.html" class="logo">
+        <span class="logo-dot"></span>
+        <span class="logo-text">Blogify</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#stats">Community</a></li>
+        <li><a href="./frontend/login.html">Sign In</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero Section ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Independent Publishing Platform
+      </span>
+      <h1>Ideas worth<br><span>sharing.</span></h1>
+      <p>Start writing, reach your audience, and grow — all in one place. Connect with a community of curious minds and passionate storytellers.</p>
+      <div class="hero-buttons">
+        <a href="./frontend/index.html" class="btn btn-primary">Start Writing</a>
+        <a href="./frontend/login.html" class="btn btn-secondary">Sign In</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features Section ── -->
+  <section class="features" id="features">
+    <div class="features-container">
+      <div class="section-label">
+        <span class="section-label-dot"></span>
+        Why Blogify
+      </div>
+      <h2 class="section-title">Built for Writers</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">✍️</span>
+          <h3>Write Without Distractions</h3>
+          <p>Our simple editor lets you focus on what matters — your ideas. Everything else is taken care of.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🌍</span>
+          <h3>Reach the World</h3>
+          <p>Hit publish and your content goes live to readers across the globe in seconds.</p>
+       </div>
+        <div class="feature-card">
+          <span class="feature-icon">👥</span>
+          <h3>Grow Together</h3>
+          <p>Meet like-minded writers and readers in a community that's built around creativity and connection.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Stats Section ── -->
+  <section class="stats" id="stats">
+    <div class="stats-container">
+      <div class="stat-item">
+        <h4>10K+</h4>
+        <p>Creators Onboard</p>
+      </div>
+      <div class="stat-item">
+        <h4>30K+</h4>
+        <p>Minds Reached Monthly</p>
+      </div>
+      <div class="stat-item">
+        <h4>50K+</h4>
+        <p>Posts Gone Live</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Section ── -->
+  <section class="cta" id="cta">
+    <div class="cta-content">
+      <h2>Ready to Share Your Story?</h2>
+      <p>Join a growing community of creators and start sharing your ideas with the world today.</p>
+      <a href="./frontend/login.html" class="btn btn-primary">Join the Community</a>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <p>&copy; 2026 Blogify &mdash; Built with ♥ by <a href="https://minhaj414.github.io/portfolio2/" target="_blank" rel="noopener">MJM. Minhaj</a></p>
+  </footer>
+</body>
+</html>
