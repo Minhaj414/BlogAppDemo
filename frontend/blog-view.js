@@ -41,6 +41,100 @@ async function fetchBlog() {
   }
 }
 
+/**
+ * Lightweight markdown-to-HTML parser.
+ * Supports: headings, bold, italic, inline code, links, lists, blockquotes, hr.
+ */
+function parseMarkdown(raw) {
+  // Escape HTML first (security)
+  let text = escapeHtml(raw);
+
+  // Split into lines for block-level parsing
+  const lines = text.split('\n');
+  const html = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Blank line
+    if (line.trim() === '') {
+      i++;
+      continue;
+    }
+
+    // Headings: ### h3, ## h2, # h1
+    const headingMatch = line.match(/^(#{1,3})\s+(.+)$/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      html.push(`<h${level}>${inlineFormat(headingMatch[2])}</h${level}>`);
+      i++;
+      continue;
+    }
+
+    // Horizontal rule: --- or ***
+    if (/^(\-{3,}|\*{3,})$/.test(line.trim())) {
+      html.push('<hr>');
+      i++;
+      continue;
+    }
+
+    // Blockquote: > text
+    if (line.startsWith('&gt; ')) {
+      const quoteLines = [];
+      while (i < lines.length && lines[i].startsWith('&gt; ')) {
+        quoteLines.push(inlineFormat(lines[i].substring(5)));
+        i++;
+      }
+      html.push(`<blockquote>${quoteLines.join('<br>')}</blockquote>`);
+      continue;
+    }
+
+    // Unordered list: - item
+    if (/^[-*]\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
+        items.push(`<li>${inlineFormat(lines[i].replace(/^[-*]\s+/, ''))}</li>`);
+        i++;
+      }
+      html.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+
+    // Ordered list: 1. item
+    if (/^\d+\.\s+/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s+/.test(lines[i])) {
+        items.push(`<li>${inlineFormat(lines[i].replace(/^\d+\.\s+/, ''))}</li>`);
+        i++;
+      }
+      html.push(`<ol>${items.join('')}</ol>`);
+      continue;
+    }
+
+    // Regular paragraph
+    html.push(`<p>${inlineFormat(line)}</p>`);
+    i++;
+  }
+
+  return html.join('\n');
+}
+
+/**
+ * Parse inline markdown: bold, italic, code, links.
+ */
+function inlineFormat(text) {
+  // Inline code: `code`
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Bold: **text**
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  // Italic: *text*
+  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Links: [text](url)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  return text;
+}
+
 function renderBlog(blog) {
   const content = document.getElementById('blogContent');
   content.className = '';
@@ -58,7 +152,7 @@ function renderBlog(blog) {
       </div>
     </header>
     <div class="blog-body">
-      ${blog.content.split('\n').map(para => `<p>${escapeHtml(para)}</p>`).join('')}
+      ${parseMarkdown(blog.content)}
     </div>
   `;
 

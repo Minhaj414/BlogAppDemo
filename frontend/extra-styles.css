@@ -1100,3 +1100,205 @@ a.user-dropdown-item {
   background: linear-gradient(135deg, #ffffff, #f8fafc);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   FLOATING TEXT TOOLBAR
+   ═══════════════════════════════════════════════════════════ */
+
+.text-toolbar {
+  position: fixed;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 6px;
+  background: rgba(20, 20, 28, 0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(52, 211, 153, 0.08);
+
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px) scale(0.96);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  pointer-events: none;
+}
+
+.text-toolbar.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ── Toolbar Buttons ── */
+.text-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #c8cdd4;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  padding: 0;
+  box-shadow: none;
+  line-height: 1;
+}
+
+.text-toolbar-btn:hover {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--accent-bright);
+  transform: none;
+  box-shadow: none;
+}
+
+.text-toolbar-btn:active {
+  background: rgba(52, 211, 153, 0.25);
+  transform: none;
+}
+
+.text-toolbar-btn svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* ── Separator ── */
+.text-toolbar-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ── Light Mode ── */
+[data-theme="light"] .text-toolbar {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(52, 211, 153, 0.10);
+}
+
+[data-theme="light"] .text-toolbar-btn {
+  color: #475569;
+}
+
+[data-theme="light"] .text-toolbar-btn:hover {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--accent-dark);
+}
+
+[data-theme="light"] .text-toolbar-sep {
+  background: rgba(15, 23, 42, 0.10);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MARKDOWN RENDERED CONTENT (blog-body)
+   ═══════════════════════════════════════════════════════════ */
+
+.blog-body h1,
+.blog-body h2,
+.blog-body h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: var(--text);
+}
+
+.blog-body h1 { font-size: 1.8rem; }
+.blog-body h2 { font-size: 1.4rem; }
+.blog-body h3 { font-size: 1.15rem; }
+
+.blog-body strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.blog-body em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.blog-body code {
+  display: inline;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.15);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.88em;
+  font-weight: 500;
+}
+
+.blog-body pre {
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--bg-2);
+  border: 1px solid var(--glass-border);
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.blog-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+.blog-body blockquote {
+  margin: 1em 0;
+  padding: 12px 20px;
+  border-left: 3px solid var(--accent-bright);
+  background: rgba(52, 211, 153, 0.04);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.blog-body ul,
+.blog-body ol {
+  margin: 0.8em 0;
+  padding-left: 1.8em;
+  color: var(--text-muted);
+}
+
+.blog-body li {
+  margin-bottom: 0.4em;
+  line-height: 1.7;
+}
+
+.blog-body a {
+  color: var(--accent-bright);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition);
+}
+
+.blog-body a:hover {
+  color: var(--accent);
+}
+
+.blog-body p {
+  margin-bottom: 0.8em;
+}
+
+.blog-body hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
